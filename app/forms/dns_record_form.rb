@@ -33,15 +33,15 @@ class DnsRecordForm
   end
 
   def create_dns_record
-    @dns_record = DnsRecord.create!(dns_record_params)
+    @dns_record = DnsRecord.create!(address: dns_record_params)
   end
 
   def create_hosts
-    hostnames.to_a.map { |name| dns_record.hostnames << HostnameFinderOrCreator.new(name).call }
+    hostnames.to_a.each { |name| dns_record.hostnames << HostnameFinderOrCreator.new(name).call }
   end
 
   def dns_record_params
-    params.permit(:address)
+    params[:address]
   end
 
   def hostnames
